@@ -14,7 +14,6 @@ import com.appsonfire.okey.bot.util.Log;
 public class Player {
 	private int index;
 	private OkeyBotInterface logic;
-	private HandComparator handComparator = new HandComparator();
 
 	public Player(int index, OkeyBotInterface logic) {
 		this.index = index;
@@ -24,6 +23,7 @@ public class Player {
 	public void play(GameState gameState) throws GameFinishedException {
 		List<Tile> myTiles = gameState.getPlayerTiles().get(this.index);
 		final Tile joker = gameState.getJoker();
+		HandComparator handComparator = new HandComparator(joker);
 		if (myTiles.size() == 15) {
 			// should drop tile...
 			Hand hand = this.logic.play(joker, myTiles);
@@ -53,7 +53,7 @@ public class Player {
 				tmpTiles.add(topDiscardedTile);
 				Hand handDrawDiscarded = this.logic.play(joker, tmpTiles);
 				
-				int compareResult = this.handComparator.compare(handDrawCenter, handDrawDiscarded);
+				int compareResult = handComparator.compare(handDrawCenter, handDrawDiscarded);
 				if (compareResult > 0 ) {
 					gameState.drawFromDiscardedTiles(this.index);
 				} else if (compareResult < 0) {

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.appsonfire.okey.bot.Tile.Color;
 
-public class OkeyHelperTest {
+public class SmartOkeyBotTest {
 
 	private final SmartOkeyBot smartBot = new SmartOkeyBot();
 
@@ -236,7 +236,6 @@ public class OkeyHelperTest {
 	@Test
 	public void testPlay() {
 		List<Hand> hands = smartBot.findAllPossibleHands(new Tile(10, Color.BLACK), toShuffledTiles("B3,B4,B5,B6,G1,Y1,R1"));
-		System.err.println(hands);
 		assertEquals(3, hands.size());
 		Hand hand = new Hand();
 		hand.addSerie(toTiles("R1, G1, Y1"));
@@ -275,9 +274,13 @@ public class OkeyHelperTest {
 		hand2.addSerie(toTiles("R1,G1,Y1"));
 		hand2.addSerie(toTiles("B3,B4,B5"));
 		hand2.setFreeTiles(toTiles("B6"));
-		System.out.println("Hand 1 " + hand1);
-		System.out.println("Hand 2 " + hand2);
 		assertTrue(hand1.equals(hand2));
+	}
+	
+	@Test
+	public void testFindPairs() {
+		List<Pair> pairs = smartBot.findPairs(new Tile(4, Color.BLACK), toShuffledTiles("B5, B5, R2,R2,Y7,Y7, G10, R10, Y9"));
+		assertEquals(3, pairs.size());
 	}
 	
 	/**

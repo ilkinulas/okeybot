@@ -1,12 +1,9 @@
 package com.appsonfire.okey.bot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import com.appsonfire.okey.bot.Tile.Color;
 
 public class Hand {
 	private List<Tile> freeTiles = new ArrayList<Tile>();
@@ -91,6 +88,14 @@ public class Hand {
 			return false;
 		}
 		return true;
+	}
+	
+	public int numberOfJokers(Tile joker) {
+		int sum = Collections.frequency(this.freeTiles, joker);
+		for (List<Tile> tiles : this.series) {
+			sum = sum + Collections.frequency(tiles, joker);
+		}
+		return sum;
 	}
 	
 }

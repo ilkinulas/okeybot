@@ -18,7 +18,7 @@ public class SmartOkeyBot implements OkeyBotInterface {
 			System.err.println(tiles);
 		}
 		List<Hand> handsAsList = new LinkedList<Hand>(hands);
-		Collections.sort(handsAsList, new HandComparator());
+		Collections.sort(handsAsList, new HandComparator(joker));
 		return handsAsList.get(0);
 	}
 	
@@ -79,6 +79,20 @@ public class SmartOkeyBot implements OkeyBotInterface {
 		return allSeries;
 	}
 	
+	final List<Pair> findPairs(Tile joker, List<Tile> tiles) {
+		Set<Tile> tileSet = new HashSet<Tile>();
+		List<Pair> pairs = new LinkedList<Pair>();
+		for (Tile tile : tiles) {
+			if (tileSet.contains(tile)) {
+				Pair pair = new Pair(tile, tile);
+				pairs.add(pair);
+			} else {
+				tileSet.add(tile);
+			}
+		}
+		
+		return pairs;
+	}
 	
 	/**
 	 * Finds unique sets.
