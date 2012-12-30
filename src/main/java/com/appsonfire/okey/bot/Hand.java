@@ -8,6 +8,11 @@ import java.util.List;
 public class Hand {
 	private List<Tile> freeTiles = new ArrayList<Tile>();
 	private List<List<Tile>> series = new LinkedList<List<Tile>>();
+	private List<Pair> pairs = new LinkedList<Pair>();
+	
+	public List<Pair> getPairs() {
+		return pairs;
+	}
 
 	public List<Tile> getFreeTiles() {
 		return freeTiles;
@@ -30,6 +35,9 @@ public class Hand {
 		for (List<Tile> serie : series) {
 			sum += serie.size();
 		}
+		for (@SuppressWarnings("unused") Pair pair : pairs) {
+			sum += 2;
+		}
 		return sum;
 	}
 	
@@ -39,6 +47,9 @@ public class Hand {
 		sb.append("Hand : ");
 		for(List<Tile> serie :  series) {
 			sb.append(serie).append(", ");
+		}
+		if (pairs.size() > 1) {
+			sb.append(pairs.toString());
 		}
 		sb.append(" -> ").append(freeTiles);
 		return sb.toString();
@@ -98,4 +109,24 @@ public class Hand {
 		return sum;
 	}
 	
+	public boolean contains(Tile tile) {
+		for (Tile freeTile : freeTiles) {
+			if (tile.equals(freeTile)) {
+				return true;
+			}
+		}
+		for (List<Tile> serie : series) {
+			for (Tile aTile : serie) {
+				if (tile.equals(aTile)) {
+					return true;
+				}
+			}
+		}
+		for (Pair pair : pairs) {
+			if (tile.equals(pair.getTile1()) || tile.equals(pair.getTile2())) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

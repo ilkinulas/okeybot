@@ -10,8 +10,24 @@ import java.util.Set;
 import com.appsonfire.okey.bot.Tile.Color;
 
 public class SmartOkeyBot implements OkeyBotInterface {
-
+	/**
+	 * If there are more than or equal to pairThreshold pairs
+	 * bot will try to collect pairs.
+	 */
+	private int pairThreshold = 4;
+	
 	public Hand play(Tile joker, List<Tile> tiles) {
+		List<Pair> pairs = findPairs(joker, tiles);
+		if (pairs.size() >= this.pairThreshold) {
+			Hand hand = new Hand();
+			hand.getPairs().addAll(pairs);
+			for (Tile tile : tiles) {
+				if (! hand.contains(tile)) {
+					hand.getFreeTiles().add(tile);
+				}
+			}
+			return hand;
+		}
 		List<Hand> hands = findAllPossibleHands(joker, tiles);
 		if (hands.size() == 0) {
 			System.err.println(joker);
@@ -338,5 +354,13 @@ public class SmartOkeyBot implements OkeyBotInterface {
             rest.remove(tile);
         }
         return rest;
-    } 	
+    }
+
+	public int getPairThreshold() {
+		return pairThreshold;
+	}
+
+	public void setPairThreshold(int pairThreshold) {
+		this.pairThreshold = pairThreshold;
+	} 	
 }

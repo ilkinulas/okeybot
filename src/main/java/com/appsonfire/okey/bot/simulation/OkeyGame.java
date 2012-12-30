@@ -1,6 +1,7 @@
 package com.appsonfire.okey.bot.simulation;
 
 import com.appsonfire.okey.bot.GameState;
+import com.appsonfire.okey.bot.Hand;
 import com.appsonfire.okey.bot.SmartOkeyBot;
 import com.appsonfire.okey.bot.util.Log;
 
@@ -38,7 +39,7 @@ public class OkeyGame {
 					// sanity check
 					throw new RuntimeException("Hand is not finished. Check your implementation : " + gfe.getHand());
 				}
-				handleGameFinished(turn, gameState);
+				handleGameFinished(turn, gfe.getHand());
 				gameFinished++;
 				break;
 			}
@@ -55,8 +56,8 @@ public class OkeyGame {
 
 	}
 
-	private void handleGameFinished(int winner, GameState gameState) {
-		Log.info("GAME FINISHED  [ " + numMoves + " ] Winner is " + winner);
+	private void handleGameFinished(int winner, Hand hand) {
+		Log.info("GAME FINISHED  [ " + numMoves + " ] Winner is " + winner + " " + hand);
 	}
 
 }
