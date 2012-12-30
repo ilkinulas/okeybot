@@ -19,14 +19,7 @@ public class SmartOkeyBot implements OkeyBotInterface {
 	public Hand play(Tile joker, List<Tile> tiles) {
 		List<Pair> pairs = findPairs(joker, tiles);
 		if (pairs.size() >= this.pairThreshold) {
-			Hand hand = new Hand();
-			hand.getPairs().addAll(pairs);
-			for (Tile tile : tiles) {
-				if (! hand.contains(tile)) {
-					hand.getFreeTiles().add(tile);
-				}
-			}
-			return hand;
+			return playForPairs(tiles, pairs);
 		}
 		List<Hand> hands = findAllPossibleHands(joker, tiles);
 		if (hands.size() == 0) {
@@ -36,6 +29,17 @@ public class SmartOkeyBot implements OkeyBotInterface {
 		List<Hand> handsAsList = new LinkedList<Hand>(hands);
 		Collections.sort(handsAsList, new HandComparator(joker));
 		return handsAsList.get(0);
+	}
+
+	private Hand playForPairs(List<Tile> tiles, List<Pair> pairs) {
+		Hand hand = new Hand();
+		hand.getPairs().addAll(pairs);
+		for (Tile tile : tiles) {
+			if (! hand.contains(tile)) {
+				hand.getFreeTiles().add(tile);
+			}
+		}
+		return hand;
 	}
 	
 	final List<Hand> findAllPossibleHands(Tile joker, List<Tile> tiles) {
